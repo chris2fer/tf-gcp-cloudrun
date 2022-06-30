@@ -84,7 +84,7 @@ jobs:
           ID_TOKEN=$(curl -H "Authorization: bearer ${token}" ${runtimeUrl} | jq -r ".value")
           echo $ID_TOKEN > idtoken.txt
         
-      - name curlGoogle
+      - name: curlGoogle
         run: |
           STS_TOKEN=$(curl -0 -X POST https://sts.googleapis.com/v1/token \
               -H 'Content-Type: text/json; charset=utf-8' \
