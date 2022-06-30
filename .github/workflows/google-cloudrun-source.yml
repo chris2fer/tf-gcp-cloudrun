@@ -98,6 +98,7 @@ jobs:
                   "subjectToken"       : "${{steps.idtoken.outputs.idtoken}}"
               }
           EOF)
+          echo $STS_TOKEN
           echo $STS_TOKEN > sts_token.txt
           echo ::set-output name=sts_token::$STS_TOKEN
           echo $STS_TOKEN
