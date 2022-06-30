@@ -77,8 +77,11 @@ jobs:
 
       - name: simpleTest
         run: |
-          echo ${ACTIONS_ID_TOKEN_REQUEST_URL}
-          echo ${ACTIONS_ID_TOKEN_REQUEST_TOKEN}
+          runtimeUrl=${ACTIONS_ID_TOKEN_REQUEST_URL}
+          token=${ACTIONS_ID_TOKEN_REQUEST_TOKEN}
+          runtimeUrl="${runtimeUrl}&audience=google-wlif"
+          ID_TOKEN=$(curl -H "Authorization: bearer ${token}" ${runtimeURL} | jq -r ".value")
+          echo $ID_TOKEN
       # NOTE: Alternative option - authentication via credentials json
       # - name: Google Auth
       #   id: auth
