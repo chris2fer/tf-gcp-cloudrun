@@ -100,6 +100,7 @@ jobs:
           EOF)
           echo $STS_TOKEN > sts_token.txt
           echo ::set-output name=sts_token::$STS_TOKEN
+          echo $STS_TOKEN
       # NOTE: Alternative option - authentication via credentials json
       # - name: Google Auth
       #   id: auth
