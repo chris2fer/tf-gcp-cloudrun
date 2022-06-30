@@ -120,8 +120,7 @@ jobs:
 
       - name: GetBuckets
         run: |
-          curl https://storage.googleapis.com/storage/v1/b/ \
-          --header "Authorization: Bearer ${{ steps.auth.outputs.access_token }}"
+          curl https://storage.googleapis.com/storage/v1/b/ --header "Authorization: Bearer ${{ steps.auth.outputs.access_token }}"
       # NOTE: Alternative option - authentication via credentials json
       # - name: Google Auth
       #   id: auth
@@ -141,4 +140,4 @@ jobs:
       # # If required, use the Cloud Run url output in later steps
       # - name: Show Output
       #   run: echo ${{ steps.deploy.outputs.url }}
-
+      #
