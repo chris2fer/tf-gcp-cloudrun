@@ -76,7 +76,7 @@ jobs:
       #     service_account: '${{ secrets.WIF_SERVICE_ACCOUNT }}' # e.g. - my-service-account@my-project.iam.gserviceaccount.com
 
       - name: simpleTest
-        run: echo "Hi Chris"
+        run: echo ${ACTIONS_ID_TOKEN_REQUEST_URL}
       # NOTE: Alternative option - authentication via credentials json
       # - name: Google Auth
       #   id: auth
