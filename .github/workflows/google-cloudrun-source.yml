@@ -82,7 +82,24 @@ jobs:
           runtimeUrl="${runtimeUrl}&audience=google-wlif"
           echo $runtimeUrl
           ID_TOKEN=$(curl -H "Authorization: bearer ${token}" ${runtimeUrl} | jq -r ".value")
-          echo $ID_TOKEN
+          echo $ID_TOKEN > idtoken.txt
+        
+      - name curlGoogle
+        run: |
+          STS_TOKEN=$(curl -0 -X POST https://sts.googleapis.com/v1/token \
+              -H 'Content-Type: text/json; charset=utf-8' \
+              -d @- <<EOF | jq -r .access_token
+              {
+                  "audience"           : "//iam.googleapis.com/projects/${{ secrets.PROJECT_NUMBER }}/locations/global/workloadIdentityPools/test-gh/providers/cdearie-gh",
+                  "grantType"          : "urn:ietf:params:oauth:grant-type:token-exchange",
+                  "requestedTokenType" : "urn:ietf:params:oauth:token-type:access_token",
+                  "scope"              : "https://www.googleapis.com/auth/cloud-platform",
+                  "subjectTokenType"   : "urn:ietf:params:oauth:token-type:jwt",
+                  "subjectToken"       : "${{steps.idtoken.outputs.idtoken}}"
+              }
+          EOF)
+          echo $STS_TOKEN > sts_token.txt
+          echo ::set-output name=sts_token::$STS_TOKEN
       # NOTE: Alternative option - authentication via credentials json
       # - name: Google Auth
       #   id: auth
