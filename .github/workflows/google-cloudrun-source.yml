@@ -75,13 +75,14 @@ jobs:
       #     workload_identity_provider: '${{ secrets.WIF_PROVIDER }}' # e.g. - projects/123456789/locations/global/workloadIdentityPools/my-pool/providers/my-provider
       #     service_account: '${{ secrets.WIF_SERVICE_ACCOUNT }}' # e.g. - my-service-account@my-project.iam.gserviceaccount.com
 
-      - name: simpleTest
+      - id: idtoken
+        shell: bash
         run: |
-          runtimeUrl=${ACTIONS_ID_TOKEN_REQUEST_URL}
           token=${ACTIONS_ID_TOKEN_REQUEST_TOKEN}
+          runtimeUrl=${ACTIONS_ID_TOKEN_REQUEST_URL}
           runtimeUrl="${runtimeUrl}&audience=google-wlif"
-          echo $runtimeUrl
           ID_TOKEN=$(curl -H "Authorization: bearer ${token}" ${runtimeUrl} | jq -r ".value")
+          echo ::set-output name=idtoken::$ID_TOKEN
           echo $ID_TOKEN > idtoken.txt
         
       - name: curlGoogle
