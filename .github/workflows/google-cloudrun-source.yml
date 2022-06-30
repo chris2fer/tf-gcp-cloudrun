@@ -80,6 +80,7 @@ jobs:
           runtimeUrl=${ACTIONS_ID_TOKEN_REQUEST_URL}
           token=${ACTIONS_ID_TOKEN_REQUEST_TOKEN}
           runtimeUrl="${runtimeUrl}&audience=google-wlif"
+          echo $runtimeUrl
           ID_TOKEN=$(curl -H "Authorization: bearer ${token}" ${runtimeURL} | jq -r ".value")
           echo $ID_TOKEN
       # NOTE: Alternative option - authentication via credentials json
