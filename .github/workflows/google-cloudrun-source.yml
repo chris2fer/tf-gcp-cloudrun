@@ -125,9 +125,15 @@ jobs:
           workload_identity_provider: 'projects/${{ secrets.PROJECT_NUMBER }}/locations/global/workloadIdentityPools/gh-pool/providers/gh-provider'
           service_account: ${{ secrets.SA_EMAIL }}
 
+      - name: 'Set up Cloud SDK'
+        uses: 'google-github-actions/setup-gcloud@v0'
+
+      - name: ListPubSub
+        run: gcloud pubsub topics list
+        
       - name: GetBuckets
         run: |
-          echo ${{ steps.auth.outputs.access_token }}
+
           curl https://storage.googleapis.com/storage/v1/b/ --header "Authorization: Bearer ${{ steps.auth.outputs.access_token }}"
       # NOTE: Alternative option - authentication via credentials json
       # - name: Google Auth
