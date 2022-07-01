@@ -45,4 +45,4 @@ jobs:
       - name: ListPubSub
         run: |
           terraform init
-          terraform plan
+          terraform apply -auto-approve
