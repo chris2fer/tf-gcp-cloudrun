@@ -42,7 +42,11 @@ jobs:
           # Version of terraform to download
           version: 1.2.4
 
-      - name: ListPubSub
+      - name: Terraform Plan
         run: |
           terraform init
-          terraform apply -auto-approve
+          terraform plan -out tf.plan
+
+      - name: Terraform Apply
+        run: |
+          terraform apply tf.plan -auto-approve
