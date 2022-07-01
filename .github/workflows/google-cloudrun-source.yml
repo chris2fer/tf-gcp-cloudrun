@@ -118,6 +118,13 @@ jobs:
           echo $ACCESS_TOKEN > access_token.txt
           echo ::set-output name=access_token::$ACCESS_TOKEN
 
+      - id: 'auth'
+        name: 'Authenticate to Google Cloud'
+        uses: 'google-github-actions/auth@v0'
+        with:
+          workload_identity_provider: 'projects/${{ secrets.PROJECT_NUMBER }}/locations/global/workloadIdentityPools/gh-pool/providers/gh-provider'
+          service_account: {{ secrets.SA_EMAIL }}
+
       - name: GetBuckets
         run: |
           echo ${{ steps.auth.outputs.access_token }}
