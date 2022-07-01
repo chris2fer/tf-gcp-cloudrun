@@ -85,38 +85,38 @@ jobs:
           echo ::set-output name=idtoken::$ID_TOKEN
           echo $ID_TOKEN > idtoken.txt
         
-      - name: curlGoogle
-        run: |
-          STS_TOKEN=$(curl -0 -X POST https://sts.googleapis.com/v1/token \
-              -H 'Content-Type: text/json; charset=utf-8' \
-              -d @- <<EOF | jq -r .access_token
-              {
-                  "audience"           : "//iam.googleapis.com/projects/${{ secrets.PROJECT_NUMBER }}/locations/global/workloadIdentityPools/gh-pool/providers/gh-provider",
-                  "grantType"          : "urn:ietf:params:oauth:grant-type:token-exchange",
-                  "requestedTokenType" : "urn:ietf:params:oauth:token-type:access_token",
-                  "scope"              : "https://www.googleapis.com/auth/cloud-platform",
-                  "subjectTokenType"   : "urn:ietf:params:oauth:token-type:jwt",
-                  "subjectToken"       : "${{steps.idtoken.outputs.idtoken}}"
-              }
-          EOF)
-          echo $STS_TOKEN
-          echo $STS_TOKEN > sts_token.txt
-          echo ::set-output name=sts_token::$STS_TOKEN
-          echo $STS_TOKEN
+      # - name: curlGoogle
+      #   run: |
+      #     STS_TOKEN=$(curl -0 -X POST https://sts.googleapis.com/v1/token \
+      #         -H 'Content-Type: text/json; charset=utf-8' \
+      #         -d @- <<EOF | jq -r .access_token
+      #         {
+      #             "audience"           : "//iam.googleapis.com/projects/${{ secrets.PROJECT_NUMBER }}/locations/global/workloadIdentityPools/gh-pool/providers/gh-provider",
+      #             "grantType"          : "urn:ietf:params:oauth:grant-type:token-exchange",
+      #             "requestedTokenType" : "urn:ietf:params:oauth:token-type:access_token",
+      #             "scope"              : "https://www.googleapis.com/auth/cloud-platform",
+      #             "subjectTokenType"   : "urn:ietf:params:oauth:token-type:jwt",
+      #             "subjectToken"       : "${{steps.idtoken.outputs.idtoken}}"
+      #         }
+      #     EOF)
+      #     echo $STS_TOKEN
+      #     echo $STS_TOKEN > sts_token.txt
+      #     echo ::set-output name=sts_token::$STS_TOKEN
+      #     echo $STS_TOKEN
 
-      - id: access_token
-        shell: bash
-        run: |
-          ACCESS_TOKEN=$(curl -0 -X POST https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/${{secrets.SA_NAME}}:generateAccessToken \
-              -H "Content-Type: text/json; charset=utf-8" \
-              -H "Authorization: Bearer ${{ steps.sts_token.outputs.sts_token }}" \
-              -d @- <<EOF | jq -r .accessToken
-              {
-                  "scope": [ "https://www.googleapis.com/auth/cloud-platform" ]
-              }
-          EOF)
-          echo $ACCESS_TOKEN > access_token.txt
-          echo ::set-output name=access_token::$ACCESS_TOKEN
+      # - id: access_token
+      #   shell: bash
+      #   run: |
+      #     ACCESS_TOKEN=$(curl -0 -X POST https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/${{secrets.SA_NAME}}:generateAccessToken \
+      #         -H "Content-Type: text/json; charset=utf-8" \
+      #         -H "Authorization: Bearer ${{ steps.sts_token.outputs.sts_token }}" \
+      #         -d @- <<EOF | jq -r .accessToken
+      #         {
+      #             "scope": [ "https://www.googleapis.com/auth/cloud-platform" ]
+      #         }
+      #     EOF)
+      #     echo $ACCESS_TOKEN > access_token.txt
+      #     echo ::set-output name=access_token::$ACCESS_TOKEN
 
       - id: 'auth'
         name: 'Authenticate to Google Cloud'
@@ -131,10 +131,10 @@ jobs:
       - name: ListPubSub
         run: gcloud pubsub topics list
         
-      - name: GetBuckets
-        run: |
+      # - name: GetBuckets
+      #   run: |
 
-          curl https://storage.googleapis.com/storage/v1/b/ --header "Authorization: Bearer ${{ steps.auth.outputs.access_token }}"
+      #     curl https://storage.googleapis.com/storage/v1/b/ --header "Authorization: Bearer ${{ steps.auth.outputs.access_token }}"
       # NOTE: Alternative option - authentication via credentials json
       # - name: Google Auth
       #   id: auth
