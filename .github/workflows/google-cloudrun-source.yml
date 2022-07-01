@@ -49,4 +49,10 @@ jobs:
 
       - name: Terraform Apply
         run: |
-          terraform apply tf.plan -auto-approve
+          terraform apply tf.plan
+  
+  no-idea:
+    runs-on: ubuntu-latest
+    steps:
+      - name: no-idea-test
+        run: echo "This is the no-idea job"
