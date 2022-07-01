@@ -2,6 +2,7 @@
 variable "project_id" {
   description   = "The target Google Cloud project where the Cloud Run service will be deployed"
   type          = string
+  default = "cdearie-tidbyte"
 }
 
 variable "region" {
@@ -13,6 +14,7 @@ variable "region" {
 variable "service_name" {
   description = "The Name of the Cloud Run service."
   type = string
+  default = "Default-Test"
 }
 
 variable "container_image" {
